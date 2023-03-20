@@ -1,27 +1,40 @@
 import React from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {decrement, increment, incrementByAmount} from './counterSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { incrementByAmount } from './counterSlice';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
-export default function Counter() {
-  const count = useSelector(state => state.counter.value);
+const IncrementByAmount = () => {
+  const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
-  const [increment, setIncrement] = React.useState('');
+  const [incrementNumber, setIncrementNumber] = React.useState(0);
 
-  const handleIncrement = event => {
-    setIncrement(event.target.value);
+  const handleChange = (event) => {
+    setIncrementNumber(Number(event.target.value));
+  };
+
+  const handleIncrementByAmount = () => {
+    dispatch(incrementByAmount(incrementNumber));
   };
 
   return (
     <div>
       <div>
-        <Textfield value={increment} onChange={handleIncrement} />
-        <button>
-          onClick={() => dispatch(incrementByAmount(parseInt(increment)))}
-        </button>
-        <span> {count} </span>
+      <span> {count} </span>
+        <TextField
+          label="Increment"
+          type="number"
+          InputProps={{ inputProps: { min: 0 } }}
+          value={incrementNumber}
+          onChange={handleChange}
+        />
+        <Button variant="contained" onClick={handleIncrementByAmount}>
+          Increment by Amount
+        </Button>
       </div>
     </div>
   );
 }
+
+export default IncrementByAmount;
